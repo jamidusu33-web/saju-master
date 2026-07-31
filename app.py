@@ -15,6 +15,7 @@ with st.form("saju_form"):
     if calendar_type == "음력":
         is_leap_month = st.checkbox("윤달입니까?")
     
+    # 연, 월, 일 입력
     col1, col2, col3 = st.columns(3)
     with col1:
         year = st.number_input("태어난 연도", min_value=1920, max_value=2026, value=1980)
@@ -23,9 +24,18 @@ with st.form("saju_form"):
     with col3:
         day = st.number_input("일", min_value=1, max_value=31, value=1)
         
+    # 태어난 시간 입력 추가 (시, 분)
+    st.markdown("---")
+    st.write("태어난 시간을 선택해 주세요.")
+    col_hour, col_min = st.columns(2)
+    with col_hour:
+        hour = st.selectbox("시간 (시)", list(range(24)), format_func=lambda x: f"{x:02d}시")
+    with col_min:
+        minute = st.selectbox("분", list(range(60)), format_func=lambda x: f"{x:02d}분")
+
     submit_button = st.form_submit_button("사주 분석 시작하기")
 
 if submit_button:
     leap_text = "(윤달)" if is_leap_month else ""
-    st.success(f"입력하신 정보: {year}년 {month}월 {day}일 [{calendar_type}{leap_text}]")
+    st.success(f"입력하신 정보: {year}년 {month}월 {day}일 {hour:02d}시 {minute:02d}분 [{calendar_type}{leap_text}]")
     st.info("여기에 만세력 엔진이 양력 변환 및 사주팔자를 연산한 결과가 나타나게 됩니다.")
